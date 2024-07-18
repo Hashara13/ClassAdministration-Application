@@ -105,8 +105,8 @@ router.route("/get/:id").get(async(req, res) => {
 
   // One student find by id and pass to an object
   const user=await Student.findById(userId)
-  .then(() => {
-    res.status(200).send({ status: "user find  done",user:user });
+  .then((student) => {
+    res.status(200).send({ status: "user find  done",student });
   })
   .catch((err) => {
     console.log(err.message);
