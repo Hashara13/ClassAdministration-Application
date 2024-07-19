@@ -1,0 +1,43 @@
+/* src/css/AddStudent.css */
+body {
+  background: white; /* Ensure the form background is white */
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  height: 60vh; /* Adjust the height as needed */
+  background: white; /* Ensure the form background is white */
+  margin-top: 40px;
+}
+
+.styled-form {
+  width: 80%; 
+  max-width: 800px; 
+  padding: 20px;
+  border-radius: 10px;
+  background: white; /* Ensure the form background is white */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.styled-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+  text-align: left; /* Align labels to the left */
+}
+
+.styled-form .form-control {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.styled-form .btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
