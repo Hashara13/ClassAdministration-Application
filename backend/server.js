@@ -26,9 +26,11 @@ connection.once('open', () => {
 
 // students file load to const studentRouter
 const studentRouter=require("./routes/students");
+const lessonRouter=require("./routes/lessons");
 
 //assign /student url to students route
 app.use('/student',studentRouter);
+app.use('/lesson',lessonRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
