@@ -1,9 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown, Collapse } from "mdb-ui-kit";
 import "mdb-ui-kit/css/mdb.min.css";
 import { Link } from "react-router-dom";
+import "../css/Header.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
+
   useEffect(() => {
     const dropdowns = document.querySelectorAll('[data-mdb-toggle="dropdown"]');
     dropdowns.forEach((dropdown) => {
@@ -16,58 +21,53 @@ export default function Header() {
     });
   }, []);
 
+  const toggleSidebar = () => {
+    setSidebarVisible(!isSidebarVisible);
+  };
+
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-        <div className="container-fluid">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-mdb-toggle="collapse"
-            data-mdb-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i className="fas fa-bars"></i>
-          </button>
-
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <a className="navbar-brand mt-2 mt-lg-0" href="#">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-                height="15"
-                alt="MDB Logo"
-                loading="lazy"
-              />
-            </a>
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
+      <button className="menu-button" onClick={toggleSidebar}>
+        <FontAwesomeIcon icon={isSidebarVisible ? faTimes : faBars} />
+      </button>
+      <div className={`vertical-navbar ${isSidebarVisible ? "visible" : ""}`}>
+        <nav className="navbar navbar-expand-lg navbar-light bg-body-black flex-column">
+          <a className="navbar-brand mt-2 mt-lg-0" href="#">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+              height="15"
+              alt="MDB Logo"
+              loading="lazy"
+            />
+          </a>
+          <div className="collapse navbar-collapse">
+            <ul className="navbar-nav flex-column">
+              <li className="nav-item text-color-beige">
                 <Link className="nav-link" to="/">
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item text-color-beige">
                 <Link className="nav-link" to="/add">
                   Add Student
                 </Link>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="">
+              <li className="nav-item text-color-beige">
+                <Link className="nav-link" to="/add/lessons">
                   Add Lessons
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
 
-          <div className="d-flex align-items-center">
-            <a className="text-reset me-3" href="#">
+          <div className="d-flex flex-column align-items-center mt-auto">
+            <a className="text-reset mb-3" href="#">
               <i className="fas fa-shopping-cart"></i>
             </a>
 
-            <div className="dropdown">
+            <div className="dropdown mb-3">
               <a
-                className="text-reset me-3 dropdown-toggle hidden-arrow"
+                className="text-reset dropdown-toggle hidden-arrow"
                 href="#"
                 id="navbarDropdownMenuLink"
                 role="button"
@@ -139,8 +139,8 @@ export default function Header() {
               </ul>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </div>
   );
 }

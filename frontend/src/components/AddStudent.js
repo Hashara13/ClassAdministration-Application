@@ -16,6 +16,7 @@ function AddStudent() {
     const newStudent = {
       name,
       age,
+      year,
       gender,
       address,
       year,
@@ -86,7 +87,7 @@ function AddStudent() {
         <div className="form-group">
           <label htmlFor="gender">Academic Year</label>
           <input
-            type="Date"
+            type="Number"
             className="form-control"
             id="academicYear"
             placeholder="Enter Academic Year (A/l Year)"

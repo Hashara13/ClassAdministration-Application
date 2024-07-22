@@ -5,16 +5,18 @@ body {
 
 .form-container {
   display: flex;
+  flex:1;
   justify-content: center;
-  height: 60vh; /* Adjust the height as needed */
-  background: white; /* Ensure the form background is white */
+  height: auto; /* Adjust the height as needed */
+  background:none; /* Ensure the form background is white */
   margin-top: 40px;
+  padding-top: 30px;
 }
 
 .styled-form {
   width: 80%; 
   max-width: 800px; 
-  padding: 20px;
+  padding: 40px;
   border-radius: 10px;
   background: white; /* Ensure the form background is white */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

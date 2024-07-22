@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import './AllStudent.css';  
+import "../css/AllStudent.css";
 
 export default function AllStudent() {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
     const viewStudent = () => {
-      axios.get("http://localhost:5000/student/")
+      axios
+        .get("http://localhost:5000/student/")
         .then((res) => {
           setStudents(res.data);
           console.log(res.data);
@@ -22,20 +23,26 @@ export default function AllStudent() {
 
   return (
     <div className="container">
-      <h1 className="title">Students List</h1>
-      <ul className="students-list">
-        {students.map((student, index) => (
-          <li key={index} className="student-item">
-            <div className="student-info">
-              <h2>{student.name}</h2>
-              <p>Age: {student.age}</p>
-              <p>Gender: {student.gender}</p>
-              <p>Address: {student.address}</p>
-              <p>Year: {student.year}</p>
+      {students.map((student, index) => (
+        <div className="card" key={index}>
+          <div className="card-header d-flex align-items-center border-bottom">
+            <span className="avatar text-bg-primary avatar-lg fs-5">R</span>
+            <div className="ms-3">
+              <h6 className="mb-0 fs-sm">{student.name}</h6>
             </div>
-          </li>
-        ))}
-      </ul>
+            <button className="btn text-muted ms-auto" type="button">
+              <span className="mb-0 fs-sm">{student.year}</span>
+
+              <i className="fas fa-ellipsis-v"></i>
+            </button>
+          </div>
+          <div className="card-body">
+            <p className="text-muted fs-sm">Age: {student.age}</p>
+            <p className="text-muted fs-sm">Gender: {student.gender}</p>
+            <p className="text-muted fs-sm">Address: {student.address}</p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
