@@ -10,6 +10,10 @@ const studentSchema=new Schema({
         type:Number,
         required:true,
     },
+    year:{
+        type:Number,
+        required:true,
+    },
     gender:{
         type:String,
         required:true,

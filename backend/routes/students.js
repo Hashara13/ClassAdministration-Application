@@ -9,6 +9,7 @@ router.route("/add").post((req, res) => {
   const age = Number(req.body.age);
   const gender = req.body.gender;
   const address = req.body.address;
+  const year = Number(req.body.year);
   const academicYear = Date(req.body.academicYear);
 
   //create new object from student model
@@ -17,6 +18,7 @@ router.route("/add").post((req, res) => {
     name,
     age,
     gender,
+    year,
     address,
     academicYear,
   });
@@ -54,11 +56,12 @@ router.route("/update/:id").put(async (req, res) => {
   let userId = req.params.id;
 
   // get values & structure them in request body as D structure o object
-  const { name, age, gender, address, academicYear } = req.body;
+  const { name, age, gender, address, academicYear,year } = req.body;
   // create new object for pass values
   const updateStudent = {
     name,
     age,
+    year,
     gender,
     address,
     academicYear,

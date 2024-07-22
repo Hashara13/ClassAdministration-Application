@@ -79,17 +79,19 @@ router.route("/lessons/update:id").put(async (req, res) => {
 });
 
 router.route("/lessons/delete:id").delete(async (req, res) => {
-  const lessonId = req.params.id;
+  if (currentDate == expiredDate) {
+    const lessonId = req.params.id;
 
-  await Lesson.findByIdAndDelete(lessonId)
-    .then(() => {
-      res.status(200).send({ status: "Delete Successfull !" });
-    })
-    .catch((err) => {
-      res
-        .status(200)
-        .send({ status: "Update Successfull !", error: err.message });
-    });
+    await Lesson.findByIdAndDelete(lessonId)
+      .then(() => {
+        res.status(200).send({ status: "Delete Successfull !" });
+      })
+      .catch((err) => {
+        res
+          .status(200)
+          .send({ status: "Update Successfull !", error: err.message });
+      });
+  }
 });
 
 router.route("/lessons/get:id").get(async (req, res) => {
