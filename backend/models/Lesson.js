@@ -2,32 +2,31 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const lessonSchema = new Schema({
-  originalName:{
-    type:String,
-  },
-  mimeType: {
-    type:String,
-  },
-  size: {
-    type:Number
-},
-  uploadDate: { 
-    type: Date, 
-    default: Date.now 
-},
-  academicYear: {
-    type: Date,
+  title: {
+    type: String,
     required: true,
   },
-  currentDate: {
+  mimeType: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: Number,
+    required: true,
+  },
+  uploadDate: {
     type: Date,
-    default: Date.now 
+    default: Date.now,
   },
   expiredDate: {
     type: Date,
     required: true,
   },
+  academicYear: {
+    type: String,
+    required: true,
+  },
 });
 
-const Lesson=mongoose.model('lesson',lessonSchema)
-module.exports=Lesson;
+const Lesson = mongoose.model("Lesson", lessonSchema);
+module.exports = Lesson;

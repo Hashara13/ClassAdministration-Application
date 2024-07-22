@@ -1,111 +1,96 @@
-const multer = require("multer");
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
-const Lesson = require("../models/Lesson");
+const multer = require('multer');
+const Lesson = require('../models/Lesson');
 
-router
-  .route("/lessons/new", upload.array("photos", 12))
-  .post(async (req, res, next) => {
-    const originalName = req.body.originalName;
-    const mimeType = req.body.mimeType;
-    const size = Number(req.body.size);
-    const uploadDate = Date(req.body.originalName);
-    const academicYear = Date(req.body.academicYear);
-    const expiredDate = Date(req.body.expiredDate);
-    const currentDate = Date(req.body.expiredDate);
-
-    const newLesson = new Lesson({
-      originalName,
-      mimeType,
-      size,
-      uploadDate,
-      academicYear,
-      currentDate,
-      expiredDate,
-    });
-
-    newLesson
-      .save()
-      .then(() => {
-        res, json("New Student added Successfull !");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
-
-router.route("/lessons").get(async (req, res) => {
-  Lesson.find()
-    .then((lessons) => {
-      res.json(lessons);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-router.route("/lessons/update:id").put(async (req, res) => {
-  const lessonId = req.params.id;
-  const {
-    originalName,
-    mimeType,
-    size,
-    uploadDate,
-    academicYear,
-    currentDate,
-    expiredDate,
-  } = req.body;
-
-  const updatedLesson = {
-    originalName,
-    mimeType,
-    size,
-    uploadDate,
-    academicYear,
-    currentDate,
-    expiredDate,
-  };
-
-  const update = await Lesson.findByIdAndUpdate(lessonId, updatedLesson)
-    .then(() => {
-      res.status(200).send({ status: "Update Successfull !" });
-    })
-    .catch((err) => {
-      res
-        .status(200)
-        .send({ status: "Update Successfull !", error: err.message });
-    });
-});
-
-router.route("/lessons/delete:id").delete(async (req, res) => {
-  if (currentDate == expiredDate) {
-    const lessonId = req.params.id;
-
-    await Lesson.findByIdAndDelete(lessonId)
-      .then(() => {
-        res.status(200).send({ status: "Delete Successfull !" });
-      })
-      .catch((err) => {
-        res
-          .status(200)
-          .send({ status: "Update Successfull !", error: err.message });
-      });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
   }
 });
 
-router.route("/lessons/get:id").get(async (req, res) => {
-  const lessonId = req.params.id;
+const upload = multer({ storage: storage });
 
-  await Lesson.findById(lessonId)
-    .then((lessons) => {
-      res.status(200).send({ status: "Delete Successfull !", lessons });
-    })
-    .catch((err) => {
-      res
-        .status(200)
-        .send({ status: "Update Successfull !", error: err.message });
-    });
+router.post('/new', upload.single('file'), async (req, res) => {
+  try {
+    const file = req.file;
+    const { title, academicYear } = req.body;
+
+    const newLesson = new Lesson({
+      title: title || file.originalname,
+      mimeType: file.mimetype,
+      size: file.size,
+      uploadDate: new Date(),
+      expiredDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 
+      academicYear: academicYear || 'Unknown',  
+      });
+
+    await newLesson.save();
+    res.json('New Lesson added successfully!');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: 'Failed to add new lesson' });
+  }
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const lessons = await Lesson.find();
+    res.json(lessons);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: 'Failed to fetch lessons' });
+  }
+});
+
+router.put('/update/:id', upload.single('file'), async (req, res) => {
+  try {
+    const lessonId = req.params.id;
+    const file = req.file;
+    const { title, academicYear } = req.body;
+
+    const updatedLesson = {
+      title: title || file.originalname,
+      mimeType: file.mimetype,
+      size: file.size,
+      uploadDate: new Date(),
+      expiredDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+      academicYear: academicYear || 'Unknown',
+    };
+
+    await Lesson.findByIdAndUpdate(lessonId, updatedLesson);
+    res.status(200).send({ status: 'Update Successful!' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: 'Failed to update lesson' });
+  }
+});
+
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    const lessonId = req.params.id;
+
+    await Lesson.findByIdAndDelete(lessonId);
+    res.status(200).send({ status: 'Delete Successful!' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: 'Failed to delete lesson' });
+  }
+});
+
+router.get('/get/:id', async (req, res) => {
+  try {
+    const lessonId = req.params.id;
+
+    const lesson = await Lesson.findById(lessonId);
+    res.status(200).send({ status: 'Fetch Successful!', lesson });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: 'Failed to fetch lesson' });
+  }
 });
 
 module.exports = router;

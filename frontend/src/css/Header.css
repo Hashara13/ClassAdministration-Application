@@ -49,7 +49,9 @@
     flex-direction: column;
     align-items: center;
   }
-  
+  .vertical-navbar{
+    margin-top: -40px;
+  }
   .navbar-brand {
     margin-bottom: 20px;
   }

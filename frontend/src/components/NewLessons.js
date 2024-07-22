@@ -1,28 +1,70 @@
-import React from 'react'
+import React, { useState } from "react";
+import axios from "axios";
 
- function NewLessons() {
+function NewLessons() {
+  const [file, setFile] = useState(null);
+  const [academicYear, setAcademicYear] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("academicYear", academicYear);
+
+    axios
+      .post("http://localhost:5000/lesson/new", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        alert("New Lesson added!");
+        setFile(null);
+        setAcademicYear("");
+      })
+      .catch((err) => {
+        alert(`Error: ${err.response ? err.response.data.error : err.message}`);
+      });
+  };
+
   return (
     <div className="form-container">
-       <form>
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" />
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1" checked />
-    <label class="form-check-label" for="exampleCheck1">Always sign in on this device</label>
-  </div>
-  <div class="text-end">
-    <button type="submit" class="btn btn-subtle me-2">Cancel</button>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </div>
-</form>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="academicYear" className="form-label">
+            Academic Year
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="academicYear"
+            onChange={(e) => setAcademicYear(e.target.value)}
+            placeholder="Enter Academic Year"
+          />
+        </div>
+
+        <label className="form-label" htmlFor="file">
+          Select Lesson File
+        </label>
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+          className="form-control"
+          id="file"
+        />
+
+        <div className="d-flex justify-content-center mt-3 align-items-center">
+          <button type="button" className="btn btn-subtle me-2" onClick={() => { setFile(null); setAcademicYear(""); }}>
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </div>
+      </form>
     </div>
-  )
+  );
 }
+
 export default NewLessons;
