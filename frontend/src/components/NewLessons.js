@@ -8,12 +8,15 @@ function NewLessons() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // use form data for send formated form data since file upload use here, they cant upload via json
     const formData = new FormData();
     formData.append("file", file);
     formData.append("academicYear", academicYear);
 
     axios
       .post("http://localhost:5000/lesson/new", formData, {
+
+        // send files with other form data & Set the content type for file uploads
         headers: {
           "Content-Type": "multipart/form-data",
         },

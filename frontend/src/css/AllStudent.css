@@ -54,3 +54,29 @@ body {
 color: #007bff;
 
  } 
+ .card-body {
+  text-align: left;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-text:last-of-type {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.btn-primary {
+  margin-top: 1rem;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
